@@ -13,7 +13,6 @@ public class BatchProcessing {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("Driver loaded successfully");
         }
         catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
@@ -21,9 +20,8 @@ public class BatchProcessing {
 
         try {
             Connection con = DriverManager.getConnection(url, username, password);
-            System.out.println("connection Establish Successfully");
             con.setAutoCommit(false);
-            String query = " INSERT INTO employees(name, job_title, salary) VALUES (?, ?, ?)";
+            String query = " INSERT INTO employee(name, job_title, salary) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             Scanner sc = new Scanner(System.in);
             while (true){
@@ -33,6 +31,10 @@ public class BatchProcessing {
                 String job_title = sc.nextLine();
                 System.out.print("Salary: ");
                 Double salary = sc.nextDouble();
+                sc.nextLine();
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, job_title);
+                preparedStatement.setDouble(3, salary);
                 preparedStatement.addBatch();
                 System.out.print("Add more values Y/N: ");
                 String decision = sc.nextLine();
